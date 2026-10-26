@@ -1,0 +1,629 @@
+@import "tailwindcss";
+
+/* Optional fonts: uncomment, then see the @theme block below.
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap");
+*/
+
+:root {
+  /* Brand: pulled from the warm wood / teal shadow grade of your photos */
+  --brand-primary: #ff5a36;   /* coral-orange: primary energy */
+  --brand-signal: #ffc93c;    /* golden yellow: call-to-action / signal */
+  --brand-accent: #00b4a6;    /* teal: cool counterweight */
+
+  /* Ink: the dark base everything sits on */
+  --ink-900: #0f0a24;
+  --ink-800: #150f2e;
+  --ink-700: #1f1440;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --color-background: #fff7ed;
+  --color-foreground: #1f1440;
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: #1f1440;
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: #1f1440;
+  --color-primary: #ff5a36;
+  --color-primary-foreground: hsl(0 0% 100%);
+  --color-secondary: #fff1e0;
+  --color-secondary-foreground: #1f1440;
+  --color-muted: #ffe9d6;
+  --color-muted-foreground: #6b5b8a;
+  --color-accent: #d8f5f1;
+  --color-accent-foreground: #1f1440;
+  --color-border: #f0d9c2;
+  --color-input: #f0d9c2;
+  --color-ring: #ff5a36;
+}
+
+.dark {
+  --color-background: #150f2e;
+  --color-foreground: #fff7ed;
+  --color-card: #1f1440;
+  --color-card-foreground: #fff7ed;
+  --color-popover: #1f1440;
+  --color-popover-foreground: #fff7ed;
+  --color-primary: #ff7a52;
+  --color-primary-foreground: #150f2e;
+  --color-secondary: #2a1b57;
+  --color-secondary-foreground: #fff7ed;
+  --color-muted: #2a1b57;
+  --color-muted-foreground: #b6a4e0;
+  --color-accent: #24406b;
+  --color-accent-foreground: #fff7ed;
+  --color-border: #3b2470;
+  --color-input: #3b2470;
+  --color-ring: #ffc93c;
+}
+
+@theme {
+  --color-background: #150f2e;
+  --color-foreground: #fff7ed;
+  --color-card: #1f1440;
+  --color-card-foreground: #fff7ed;
+  --color-popover: #1f1440;
+  --color-popover-foreground: #fff7ed;
+  --color-primary: #ff7a52;
+  --color-primary-foreground: #150f2e;
+  --color-secondary: #2a1b57;
+  --color-secondary-foreground: #fff7ed;
+  --color-muted: #2a1b57;
+  --color-muted-foreground: #b6a4e0;
+  --color-accent: #24406b;
+  --color-accent-foreground: #fff7ed;
+  --color-border: #3b2470;
+  --color-input: #3b2470;
+  --color-ring: #ffc93c;
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-signal: var(--brand-signal);
+  --color-brand-accent: var(--brand-accent);
+
+  /* Uncomment together with the font @import at the top
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+  */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Headings: tighter, so big type feels deliberate */
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--brand-signal) 85%, transparent);
+    color: var(--ink-900);
+  }
+
+  /* Visible keyboard focus */
+  :focus-visible {
+    outline: 2px solid var(--brand-signal);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+body {
+  cursor: default;
+  background: var(--ink-800);
+}
+
+/* ------------------------------------------------------------------
+   CINEMATIC LAYER: film grain + soft vignette over the whole site.
+   Sits on top of everything but never blocks clicks.
+------------------------------------------------------------------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(8, 5, 20, 0.45) 100%
+  );
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl;
+  }
+
+  .glass-dark {
+    @apply bg-black/40 backdrop-blur-xl;
+  }
+
+  /* Page background: warm key light top-left, teal fill top-right,
+     golden bounce at the bottom, like a lit film set */
+  .app-bg {
+    background:
+      radial-gradient(1200px 640px at 12% -12%, rgba(255, 90, 54, 0.20), transparent 60%),
+      radial-gradient(1000px 600px at 112% 8%, rgba(0, 180, 166, 0.17), transparent 60%),
+      radial-gradient(900px 520px at 50% 122%, rgba(255, 201, 60, 0.12), transparent 60%),
+      linear-gradient(180deg, #170f33 0%, #0f0a24 100%);
+    background-attachment: fixed;
+  }
+
+  .surface {
+    @apply bg-white/[0.04] backdrop-blur-xl;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .surface-strong {
+    @apply bg-white/[0.07] backdrop-blur-xl;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  }
+
+  .section-shell {
+    @apply rounded-[2rem] bg-white/[0.04];
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.07),
+      0 24px 80px rgba(8, 5, 20, 0.55);
+  }
+
+  .section-kicker {
+    @apply inline-flex items-center gap-2 rounded-full bg-white/[0.07] px-4 py-2 text-xs uppercase tracking-[0.28em] text-white/80;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+
+  .brand-link {
+    color: var(--brand-primary);
+    transition: color 200ms ease;
+  }
+
+  .brand-link:hover {
+    color: var(--brand-signal);
+  }
+
+  .brand-signal {
+    color: var(--brand-signal);
+  }
+
+  .brand-accent {
+    color: var(--brand-accent);
+  }
+
+  .brand-outline {
+    @apply border border-white/10 transition-colors;
+  }
+
+  .brand-outline:hover {
+    border-color: color-mix(in srgb, var(--brand-primary) 55%, white 0%);
+  }
+
+  .brand-primary-bg {
+    background-color: var(--brand-primary);
+  }
+
+  .brand-signal-bg {
+    background-color: var(--brand-signal);
+  }
+
+  .brand-accent-bg {
+    background-color: var(--brand-accent);
+  }
+
+  /* Headline gradient that slowly drifts, like light moving across glass */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      90deg,
+      var(--brand-primary),
+      var(--brand-signal) 45%,
+      var(--brand-accent) 90%,
+      var(--brand-primary)
+    );
+    background-size: 220% 100%;
+    animation: gradient-drift 9s linear infinite;
+  }
+
+  /* Red animated headline: deep red -> coral -> gold, slowly drifting */
+  .text-gradient-red {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      90deg,
+      #ff1f1f,
+      #ff5a36 38%,
+      #ffc93c 68%,
+      #ff1f1f
+    );
+    background-size: 220% 100%;
+    animation: gradient-drift 7s linear infinite;
+  }
+
+  /* ----------------------------------------------------------------
+     BUTTONS: use class="btn-primary" or class="btn-ghost"
+  ----------------------------------------------------------------- */
+  .btn-primary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    overflow: hidden;
+    border-radius: 9999px;
+    padding: 0.8rem 1.6rem;
+    font-weight: 600;
+    color: var(--ink-900);
+    background: linear-gradient(135deg, var(--brand-signal), var(--brand-primary));
+    box-shadow:
+      0 10px 30px rgba(255, 90, 54, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    transition:
+      transform 250ms var(--ease-out),
+      box-shadow 250ms var(--ease-out);
+  }
+
+  .btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-120%) skewX(-20deg);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    transition: transform 700ms var(--ease-out);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 16px 40px rgba(255, 90, 54, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+
+  .btn-primary:hover::after {
+    transform: translateX(120%) skewX(-20deg);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.8rem 1.6rem;
+    font-weight: 500;
+    color: #fff7ed;
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+    transition:
+      background 250ms ease,
+      box-shadow 250ms ease,
+      transform 250ms var(--ease-out);
+  }
+
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.09);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand-accent) 70%, transparent);
+    transform: translateY(-2px);
+  }
+
+  /* ----------------------------------------------------------------
+     CARDS: class="card-glow" gives a border that lights up toward
+     your cursor. Optional JS below sets --mx / --my (see notes).
+  ----------------------------------------------------------------- */
+  .card-glow {
+    position: relative;
+    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    transition:
+      transform 350ms var(--ease-out),
+      background 350ms ease;
+  }
+
+  .card-glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(
+      320px circle at var(--mx, 50%) var(--my, 0%),
+      var(--brand-signal),
+      var(--brand-primary) 35%,
+      transparent 70%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 350ms ease;
+    pointer-events: none;
+  }
+
+  .card-glow:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  .card-glow:hover::before {
+    opacity: 1;
+  }
+
+  /* ----------------------------------------------------------------
+     PHOTOS: class="photo-cine" on a wrapper around an <img>.
+     Applies the same teal/orange grade as your edited photos.
+  ----------------------------------------------------------------- */
+  .photo-cine {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    box-shadow: 0 30px 70px rgba(8, 5, 20, 0.6);
+  }
+
+  .photo-cine img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: contrast(1.08) saturate(0.95);
+    transition: transform 900ms var(--ease-out);
+  }
+
+  .photo-cine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at center, transparent 50%, rgba(8, 5, 20, 0.55) 100%),
+      linear-gradient(160deg, rgba(255, 140, 70, 0.14), transparent 45%, rgba(0, 180, 166, 0.18));
+    mix-blend-mode: soft-light;
+  }
+
+  .photo-cine:hover img {
+    transform: scale(1.05);
+  }
+
+  /* Blueprint grid: warm coral/teal weave. Fades out toward the edges. */
+  .blueprint-grid {
+    background-image:
+      linear-gradient(rgba(255, 122, 82, 0.14) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 180, 166, 0.14) 1px, transparent 1px),
+      linear-gradient(rgba(255, 122, 82, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 180, 166, 0.06) 1px, transparent 1px);
+    background-size:
+      80px 80px,
+      80px 80px,
+      16px 16px,
+      16px 16px;
+    background-position: -1px -1px;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 85%);
+    mask-image: radial-gradient(ellipse at center, #000 35%, transparent 85%);
+  }
+
+  /* Page-load entrance: use on the hero only, once */
+  .animate-rise {
+    animation: rise 1100ms var(--ease-out) both;
+  }
+
+  .animate-rise-delay-1 {
+    animation: rise 1100ms var(--ease-out) 150ms both;
+  }
+
+  .animate-rise-delay-2 {
+    animation: rise 1100ms var(--ease-out) 300ms both;
+  }
+
+  /* ----------------------------------------------------------------
+     LAMP (unchanged behavior, richer light)
+  ----------------------------------------------------------------- */
+  .lamp-shell {
+    position: fixed;
+    top: -92px;
+    left: 50%;
+    width: 88px;
+    height: 110px;
+    transform: translateX(-50%) translateY(-120px);
+    border-bottom-left-radius: 9999px;
+    border-bottom-right-radius: 9999px;
+    background: linear-gradient(180deg, #ff7a52 0%, #a3341c 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+      0 14px 22px rgba(21, 15, 46, 0.55),
+      0 0 60px rgba(255, 201, 60, 0.35);
+    opacity: 0;
+    transition:
+      transform 420ms ease,
+      opacity 300ms ease;
+    z-index: 45;
+    pointer-events: none;
+  }
+
+  .lamp-shell::before {
+    content: "";
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    width: 4px;
+    height: 62px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, #ffc93c 0%, #a3341c 100%);
+    border-radius: 9999px;
+  }
+
+  .lamp-beam {
+    position: fixed;
+    top: 8px;
+    left: 50%;
+    width: min(92vw, 740px);
+    height: min(70vh, 560px);
+    transform: translateX(-50%) scaleY(0.35);
+    transform-origin: top center;
+    clip-path: polygon(48% 0%, 52% 0%, 100% 100%, 0% 100%);
+    background: radial-gradient(
+      ellipse at top,
+      rgba(255, 201, 60, 0.42) 0%,
+      rgba(255, 122, 82, 0.24) 35%,
+      rgba(0, 180, 166, 0.10) 65%,
+      rgba(0, 180, 166, 0) 100%
+    );
+    filter: blur(1px);
+    opacity: 0;
+    transition:
+      transform 460ms ease,
+      opacity 360ms ease;
+    z-index: 40;
+    pointer-events: none;
+  }
+
+  html.lamp-on .lamp-shell {
+    transform: translateX(-50%) translateY(95px);
+    opacity: 1;
+  }
+
+  html.lamp-on .lamp-beam {
+    transform: translateX(-50%) scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes gradient-drift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 220% 50%;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@media (max-width: 639px) {
+  .glass,
+  .glass-dark,
+  .surface,
+  .surface-strong {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .section-shell {
+    box-shadow: none;
+  }
+
+  .lamp-beam {
+    width: 100vw;
+    height: 55vh;
+    filter: none;
+  }
+
+  /* Lighter grain on phones */
+  body::before {
+    opacity: 0.04;
+  }
+
+  .animate-spin,
+  .animate-ping,
+  .animate-pulse,
+  .animate-float {
+    animation: none !important;
+  }
+}
+
+/* Respect people who turn animations off in their system settings */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--brand-primary) 55%, transparent),
+    color-mix(in srgb, var(--brand-accent) 55%, transparent)
+  );
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--brand-primary) 80%, transparent),
+    color-mix(in srgb, var(--brand-accent) 80%, transparent)
+  );
+}
