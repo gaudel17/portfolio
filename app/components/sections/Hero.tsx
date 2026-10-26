@@ -105,7 +105,7 @@ export default function Hero() {
           transition={{ duration: 0.9, delay: 0.15 }}
           className="order-1 overflow-hidden rounded-4xl border border-white/10 bg-black/20 sm:order-none"
         >
-          <div className="relative min-h-112 sm:min-h-128">
+          <div className="relative h-[min(72svh,30rem)] min-h-96 overflow-hidden sm:h-128 sm:min-h-128">
             <OptimizedImage
               src="/heroimage.png"
               alt="Amrit Gaudel portrait"
