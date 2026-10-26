@@ -18,9 +18,9 @@ export default function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="section-kicker w-fit"
+            className="section-kicker w-fit max-w-full"
           >
-            <span className="whitespace-nowrap">
+            <span className="whitespace-normal">
               Amrit Gaudel · Civil Engineering Student
             </span>
           </motion.div>
@@ -126,7 +126,7 @@ export default function Hero() {
             <p className="text-xs uppercase tracking-[0.24em] text-white/45">
               Availability
             </p>
-            <p className="mt-3 text-base font-semibold text-white">
+            <p className="mt-3 break-words text-base font-semibold text-white">
               Open for internships and design collaborations
             </p>
           </div>
